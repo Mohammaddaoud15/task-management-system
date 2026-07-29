@@ -2,6 +2,8 @@
 
 A production-style Task Management REST API built with **FastAPI**, **PostgreSQL**, **SQLAlchemy**, **Docker Compose**, and **JWT Authentication**.
 
+---
+
 ## Features
 
 - User registration
@@ -12,9 +14,12 @@ A production-style Task Management REST API built with **FastAPI**, **PostgreSQL
 - View a task by ID
 - Update tasks
 - Delete tasks
-- PostgreSQL database
-- Dockerized application
-- Automatic interactive API documentation
+- PostgreSQL database with SQLAlchemy ORM
+- Dockerized application using Docker Compose
+- Environment-based configuration using Pydantic Settings
+- Structured application logging
+- Automatic interactive API documentation (Swagger & ReDoc)
+- Comprehensive unit and integration test suite using Pytest
 
 ---
 
@@ -27,13 +32,15 @@ A production-style Task Management REST API built with **FastAPI**, **PostgreSQL
 - JWT (python-jose)
 - Passlib (bcrypt)
 - Pydantic
+- Pytest
+- Uvicorn
 - UV package manager
 
 ---
 
 ## Project Structure
 
-```
+```text
 task-management-system/
 │
 ├── app/
@@ -71,6 +78,23 @@ task-management-system/
 │   ├── dependencies.py
 │   └── main.py
 │
+├── tests/
+│   ├── test_repositories/
+│   │   ├── test_task_repositories.py
+│   │   └── test_user_repositories.py
+│   │
+│   ├── test_routers/
+│   │   ├── test_auth_router.py
+│   │   └── test_task_router.py
+│   │
+│   ├── test_services/
+│   │   ├── test_auth_service.py
+│   │   └── test_task_service.py
+│   │
+│   ├── conftest.py
+│   ├── test_security.py
+│   └── test_dependencies.py
+│
 ├── .env.example
 ├── .gitignore
 ├── .python-version
@@ -81,6 +105,8 @@ task-management-system/
 └── uv.lock
 ```
 
+---
+
 ## API Endpoints
 
 ### Authentication
@@ -88,19 +114,19 @@ task-management-system/
 | Method | Endpoint | Description |
 |---------|----------|-------------|
 | POST | `/auth/register` | Register a new user |
-| POST | `/auth/login` | Login and receive JWT |
+| POST | `/auth/login` | Login and receive a JWT access token |
 
 ### Tasks
 
 | Method | Endpoint | Description |
 |---------|----------|-------------|
-| POST | `/tasks/` | Create task |
-| GET | `/tasks/` | Get all tasks |
-| GET | `/tasks/{task_id}` | Get task by ID |
-| PATCH | `/tasks/{task_id}` | Update task |
-| DELETE | `/tasks/{task_id}` | Delete task |
+| POST | `/tasks/` | Create a task |
+| GET | `/tasks/` | Retrieve all tasks |
+| GET | `/tasks/{task_id}` | Retrieve a task by ID |
+| PATCH | `/tasks/{task_id}` | Update a task |
+| DELETE | `/tasks/{task_id}` | Delete a task |
 
-All task endpoints require a valid Bearer Token.
+> **Note:** All task endpoints require a valid Bearer Token.
 
 ---
 
@@ -109,7 +135,7 @@ All task endpoints require a valid Bearer Token.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/task-management-system.git
+git clone https://github.com/Mohammaddaoud15/task-management-system.git
 cd task-management-system
 ```
 
@@ -122,13 +148,13 @@ DATABASE_URL=postgresql://postgres:postgres@db:5432/task_management_db
 SECRET_KEY=your_secret_key_here
 ```
 
-### 3. Build and start
+### 3. Build and start the application
 
 ```bash
 docker compose up --build
 ```
 
-The API will be available at
+The API will be available at:
 
 ```
 http://localhost:8000
@@ -136,19 +162,48 @@ http://localhost:8000
 
 ---
 
+## Running the Tests
+
+### Run locally
+
+```bash
+uv run pytest
+```
+
+### Run inside Docker
+
+```bash
+docker compose exec backend uv run pytest
+```
+
+### Current Test Status
+
+```
+46 passed
+```
+
+The test suite covers:
+
+- Security utilities
+- Authentication dependency
+- User repository
+- Task repository
+- Authentication service
+- Task service
+- Authentication router
+- Task router
+
+---
+
 ## API Documentation
 
-Swagger UI
+Swagger UI:
 
 ```
 http://localhost:8000/docs
 ```
 
-ReDoc
 
-```
-http://localhost:8000/redoc
-```
 
 ---
 
@@ -156,28 +211,29 @@ http://localhost:8000/redoc
 
 1. Register a new account.
 2. Login using `/auth/login`.
-3. Copy the returned access token.
+3. Copy the returned JWT access token.
 4. Open `/docs`.
 5. Click **Authorize**.
-6. Enter
+6. Enter:
 
 ```
 Bearer <your_access_token>
 ```
 
-or simply paste the token if using the built-in OAuth2 flow.
+or simply paste the token when using FastAPI's built-in OAuth2 authorization flow.
 
 ---
 
-## Future Improvements
+## Logging
 
-- Automated unit tests
-- Database migrations with Alembic
-- Pagination and filtering
-- Search functionality
-- Task categories
-- Task reminders
-- CI/CD pipeline
+The project uses Python's built-in `logging` module to record important application events, including:
+
+- Successful user registration
+- Successful and failed login attempts
+- Task creation
+- Task updates
+- Task deletion
+- Unauthorized or invalid task operations
 
 ---
 
