@@ -34,35 +34,52 @@ A production-style Task Management REST API built with **FastAPI**, **PostgreSQL
 ## Project Structure
 
 ```
-app/
+task-management-system/
 │
-├── core/
-│   ├── config.py
-│   └── security.py
+├── app/
+│   ├── core/
+│   │   ├── config.py
+│   │   ├── logging.py
+│   │   └── security.py
+│   │
+│   ├── models/
+│   │   ├── enums.py
+│   │   ├── task.py
+│   │   └── user.py
+│   │
+│   ├── repositories/
+│   │   ├── task_repositories.py
+│   │   └── user_repositories.py
+│   │
+│   ├── routers/
+│   │   ├── auth_router.py
+│   │   └── task_router.py
+│   │
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── base.py
+│   │   ├── task.py
+│   │   └── user.py
+│   │
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── auth_service.py
+│   │   └── task_service.py
+│   │
+│   ├── database.py
+│   ├── dependencies.py
+│   └── main.py
 │
-├── models/
-│
-├── repositories/
-│
-├── routers/
-│
-├── schemas/
-│
-├── services/
-│
-├── database.py
-├── dependencies.py
-└── main.py
-
-tests/
-
-Dockerfile
-docker-compose.yml
-pyproject.toml
-README.md
+├── .env.example
+├── .gitignore
+├── .python-version
+├── docker-compose.yml
+├── Dockerfile
+├── pyproject.toml
+├── README.md
+└── uv.lock
 ```
-
----
 
 ## API Endpoints
 
